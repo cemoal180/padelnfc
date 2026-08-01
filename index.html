@@ -24,7 +24,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 30px;
@@ -36,13 +36,13 @@
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 300;
             letter-spacing: 3px;
             background: linear-gradient(90deg, #f7971e, #ffd200);
@@ -51,29 +51,29 @@
         }
 
         .header .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.5);
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         /* Estado NFC */
         .nfc-status {
             text-align: center;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 12px;
             background: rgba(0, 0, 0, 0.3);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .nfc-status .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             display: inline-block;
             transition: all 0.3s;
@@ -90,6 +90,11 @@
             animation: pulse 1s infinite;
         }
 
+        .nfc-status .dot.waiting {
+            background: #ffaa44;
+            box-shadow: 0 0 15px #ffaa4466;
+        }
+
         @keyframes pulse {
             0%,
             100% {
@@ -100,19 +105,14 @@
             }
         }
 
-        .nfc-status .dot.waiting {
-            background: #ffaa44;
-            box-shadow: 0 0 15px #ffaa4466;
-        }
-
         .btn-nfc {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
+            padding: 4px 14px;
+            border-radius: 16px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             transition: all 0.3s;
         }
 
@@ -125,23 +125,202 @@
             cursor: not-allowed;
         }
 
-        /* Marcador principal */
+        /* ============================================
+                   DIAGRAMA DE CANCHA (Saque visual)
+                ============================================ */
+        .court-container {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0 12px;
+        }
+
+        .court-diagram {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2 / 1;
+            background: linear-gradient(180deg, #2d8a4e, #1e6b3a);
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        /* Líneas de la cancha */
+        .court-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .court-line.center-net {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .court-line.center-serve {
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .court-line.service-line {
+            top: 25%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .court-line.service-line-bottom {
+            top: 75%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Laterales de saque (iluminados) */
+        .serve-side {
+            position: absolute;
+            width: 50%;
+            height: 25%;
+            transition: all 0.4s ease;
+            border-radius: 4px;
+        }
+
+        .serve-side.top-left {
+            top: 0;
+            left: 0;
+        }
+        .serve-side.top-right {
+            top: 0;
+            right: 0;
+        }
+        .serve-side.bottom-left {
+            bottom: 0;
+            left: 0;
+        }
+        .serve-side.bottom-right {
+            bottom: 0;
+            right: 0;
+        }
+
+        .serve-side.active-serve {
+            background: rgba(255, 215, 0, 0.35);
+            box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            animation: glowServe 1s infinite alternate;
+        }
+
+        @keyframes glowServe {
+            0% {
+                box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.15);
+            }
+            100% {
+                box-shadow: inset 0 0 40px rgba(255, 215, 0, 0.35);
+            }
+        }
+
+        /* Indicador de saque (texto sobre la cancha) */
+        .serve-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .serve-indicator .serve-team {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            letter-spacing: 1px;
+        }
+
+        .serve-indicator .serve-side-text {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            color: #ccc;
+        }
+
+        .serve-indicator .serve-number {
+            font-size: 0.5rem;
+            opacity: 0.5;
+            color: #888;
+        }
+
+        /* Etiquetas de los lados */
+        .court-label {
+            position: absolute;
+            font-size: 0.5rem;
+            opacity: 0.3;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .court-label.left {
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .court-label.right {
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .court-label.top {
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .court-label.bottom {
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .court-label .arrow {
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+                   MARCADOR PRINCIPAL
+                ============================================ */
         .scoreboard {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 10px;
-            margin: 15px 0 20px;
+            gap: 8px;
+            margin: 8px 0 12px;
             align-items: center;
         }
 
         .team {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 15px;
+            border-radius: 16px;
+            padding: 12px;
             text-align: center;
             transition: all 0.3s;
             border: 2px solid transparent;
-            min-height: 180px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -152,44 +331,60 @@
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
 
+        .team.serving-team {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+        }
+
         .team .team-name {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
         }
 
         .team .team-name .chip-id {
-            font-size: 0.6rem;
-            opacity: 0.5;
+            font-size: 0.5rem;
+            opacity: 0.4;
             display: block;
             font-weight: normal;
         }
 
+        .team .team-name .serve-badge {
+            font-size: 0.6rem;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 1px 10px;
+            border-radius: 10px;
+            color: #ffd700;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
         .team .points {
-            font-size: 4rem;
+            font-size: 3.2rem;
             font-weight: 800;
             line-height: 1;
-            margin: 5px 0;
+            margin: 2px 0;
         }
 
         .team .points-label {
-            font-size: 0.7rem;
-            opacity: 0.6;
+            font-size: 0.6rem;
+            opacity: 0.5;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .team .games {
-            font-size: 1.2rem;
-            opacity: 0.7;
-            margin-top: 5px;
+            font-size: 1rem;
+            opacity: 0.6;
+            margin-top: 3px;
         }
 
         .team .games span {
             font-weight: bold;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
         }
 
         .team-1 .team-name {
@@ -207,37 +402,39 @@
         }
 
         .vs {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            opacity: 0.3;
+            opacity: 0.2;
             writing-mode: vertical-lr;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
         }
 
-        /* Sets y estado del partido */
+        /* ============================================
+                   INFORMACIÓN DEL PARTIDO
+                ============================================ */
         .match-info {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            margin: 10px 0;
             text-align: center;
         }
 
         .match-info .info-item {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 8px;
         }
 
         .match-info .info-item .label {
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             text-transform: uppercase;
-            opacity: 0.5;
+            opacity: 0.4;
             letter-spacing: 1px;
         }
 
         .match-info .info-item .value {
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: bold;
         }
 
@@ -251,78 +448,85 @@
             color: #4ecdc4;
         }
 
-        /* Mensajes y alertas */
+        .match-info .info-item .value.tiebreak-active {
+            color: #ff44ff;
+            animation: pulse 0.8s infinite;
+        }
+
+        /* ============================================
+                   MENSAJES
+                ============================================ */
         .message-area {
             text-align: center;
-            min-height: 50px;
+            min-height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 15px;
+            margin: 6px 0;
+            padding: 8px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             transition: all 0.3s;
         }
 
         .message-area.info {
-            background: rgba(68, 136, 255, 0.2);
+            background: rgba(68, 136, 255, 0.15);
             color: #88bbff;
         }
 
         .message-area.success {
-            background: rgba(68, 255, 136, 0.2);
+            background: rgba(68, 255, 136, 0.15);
             color: #88ffbb;
             animation: flashGreen 0.5s ease;
         }
 
         .message-area.warning {
-            background: rgba(255, 170, 68, 0.2);
+            background: rgba(255, 170, 68, 0.15);
             color: #ffbb88;
             animation: flashOrange 0.5s ease;
         }
 
         .message-area.alert {
-            background: rgba(255, 68, 68, 0.2);
+            background: rgba(255, 68, 68, 0.15);
             color: #ff8888;
             animation: flashRed 0.5s ease;
         }
 
         .message-area.winner {
-            background: rgba(255, 215, 0, 0.25);
+            background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             animation: pulseGold 1s infinite;
         }
 
         @keyframes flashGreen {
             0%,
             100% {
-                background: rgba(68, 255, 136, 0.2);
+                background: rgba(68, 255, 136, 0.15);
             }
             50% {
-                background: rgba(68, 255, 136, 0.5);
+                background: rgba(68, 255, 136, 0.4);
             }
         }
 
         @keyframes flashOrange {
             0%,
             100% {
-                background: rgba(255, 170, 68, 0.2);
+                background: rgba(255, 170, 68, 0.15);
             }
             50% {
-                background: rgba(255, 170, 68, 0.5);
+                background: rgba(255, 170, 68, 0.4);
             }
         }
 
         @keyframes flashRed {
             0%,
             100% {
-                background: rgba(255, 68, 68, 0.2);
+                background: rgba(255, 68, 68, 0.15);
             }
             50% {
-                background: rgba(255, 68, 68, 0.5);
+                background: rgba(255, 68, 68, 0.4);
             }
         }
 
@@ -333,29 +537,31 @@
                 opacity: 1;
             }
             50% {
-                transform: scale(1.05);
+                transform: scale(1.03);
                 opacity: 0.9;
             }
         }
 
-        /* Botones de control */
+        /* ============================================
+                   CONTROLES
+                ============================================ */
         .controls {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .controls button {
-            padding: 12px;
+            padding: 10px;
             border: none;
-            border-radius: 12px;
-            font-size: 0.9rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .controls button:active {
@@ -363,146 +569,178 @@
         }
 
         .btn-reset {
-            background: rgba(255, 68, 68, 0.2);
+            background: rgba(255, 68, 68, 0.15);
             color: #ff6666;
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            border: 1px solid rgba(255, 68, 68, 0.2);
         }
 
         .btn-reset:hover {
-            background: rgba(255, 68, 68, 0.3);
+            background: rgba(255, 68, 68, 0.25);
         }
 
         .btn-undo {
-            background: rgba(255, 170, 68, 0.2);
+            background: rgba(255, 170, 68, 0.15);
             color: #ffaa44;
-            border: 1px solid rgba(255, 170, 68, 0.3);
+            border: 1px solid rgba(255, 170, 68, 0.2);
         }
 
         .btn-undo:hover {
-            background: rgba(255, 170, 68, 0.3);
+            background: rgba(255, 170, 68, 0.25);
         }
 
         .btn-change-court {
-            background: rgba(68, 136, 255, 0.2);
+            background: rgba(68, 136, 255, 0.15);
             color: #4488ff;
-            border: 1px solid rgba(68, 136, 255, 0.3);
+            border: 1px solid rgba(68, 136, 255, 0.2);
         }
 
         .btn-change-court:hover {
-            background: rgba(68, 136, 255, 0.3);
+            background: rgba(68, 136, 255, 0.25);
         }
 
         .btn-change-court.active {
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.15);
             color: #ffd700;
             border-color: rgba(255, 215, 0, 0.3);
             animation: pulseGold 1s infinite;
         }
 
+        .btn-serve-toggle {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-serve-toggle:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
         .btn-test {
             background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.6rem;
         }
 
         .btn-test:hover {
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Footer */
+        /* ============================================
+                   FOOTER
+                ============================================ */
         .footer {
             text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: 14px;
+            padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.6rem;
-            opacity: 0.3;
+            font-size: 0.5rem;
+            opacity: 0.25;
         }
 
-        /* Responsive */
+        /* ============================================
+                   RESPONSIVE
+                ============================================ */
         @media (max-width: 600px) {
             .container {
                 padding: 12px;
             }
 
             .scoreboard {
-                gap: 5px;
+                gap: 4px;
             }
 
             .team {
-                padding: 10px;
-                min-height: 130px;
+                padding: 8px;
+                min-height: 110px;
             }
 
             .team .points {
-                font-size: 3rem;
+                font-size: 2.4rem;
             }
 
             .team .team-name {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
 
             .team .games {
-                font-size: 1rem;
+                font-size: 0.8rem;
             }
             .team .games span {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
 
+            .match-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+            }
             .match-info .info-item .value {
-                font-size: 1.3rem;
+                font-size: 1rem;
             }
 
             .controls {
                 grid-template-columns: 1fr 1fr;
+                gap: 6px;
             }
 
             .controls button {
-                font-size: 0.7rem;
-                padding: 10px;
+                font-size: 0.6rem;
+                padding: 8px;
             }
 
             .header h1 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             .vs {
-                font-size: 0.8rem;
+                font-size: 0.7rem;
             }
 
             .message-area {
-                font-size: 0.9rem;
-                min-height: 40px;
+                font-size: 0.8rem;
+                min-height: 34px;
+            }
+
+            .court-diagram {
+                max-width: 280px;
+            }
+
+            .serve-indicator .serve-team {
+                font-size: 0.6rem;
+            }
+
+            .serve-indicator .serve-side-text {
+                font-size: 0.5rem;
             }
         }
 
         @media (max-width: 400px) {
             .team .points {
-                font-size: 2.2rem;
+                font-size: 1.8rem;
             }
             .team {
-                min-height: 100px;
-                padding: 8px;
-            }
-            .match-info {
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 5px;
-            }
-            .match-info .info-item {
+                min-height: 90px;
                 padding: 6px;
             }
+            .match-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+            .match-info .info-item {
+                padding: 4px;
+            }
             .match-info .info-item .value {
-                font-size: 1rem;
+                font-size: 0.9rem;
+            }
+            .court-diagram {
+                max-width: 220px;
             }
         }
 
-        /* Scroll suave para móvil */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Ocultar scrollbar en móvil */
         ::-webkit-scrollbar {
             width: 0;
             background: transparent;
@@ -515,7 +753,7 @@
         <!-- Header -->
         <div class="header">
             <h1>🏸 PÁDEL NFC</h1>
-            <div class="subtitle">Acerca el chip para sumar punto</div>
+            <div class="subtitle">Acerca el chip para sumar punto · Indicador de saque</div>
         </div>
 
         <!-- Estado NFC -->
@@ -523,15 +761,50 @@
             <span class="dot inactive" id="nfcDot"></span>
             <span id="nfcText">NFC no disponible</span>
             <button class="btn-nfc" id="btnNfc" onclick="initNFC()">🔗 Conectar</button>
-            <button class="btn-nfc" id="btnSimular" onclick="simularChip()" style="font-size:0.6rem;opacity:0.5;">🧪 Simular</button>
+            <button class="btn-nfc" id="btnSimular" onclick="simularChip()" style="font-size:0.55rem;opacity:0.4;">🧪 Simular</button>
         </div>
 
-        <!-- Marcador -->
+        <!-- ============================================
+        DIAGRAMA DE CANCHA CON INDICADOR DE SAQUE
+        ============================================ -->
+        <div class="court-container">
+            <div class="court-diagram" id="courtDiagram">
+                <!-- Líneas de la cancha -->
+                <div class="court-line center-net"></div>
+                <div class="court-line center-serve"></div>
+                <div class="court-line service-line"></div>
+                <div class="court-line service-line-bottom"></div>
+
+                <!-- Laterales de saque (se iluminan según corresponda) -->
+                <div class="serve-side top-left" id="serveTL"></div>
+                <div class="serve-side top-right" id="serveTR"></div>
+                <div class="serve-side bottom-left" id="serveBL"></div>
+                <div class="serve-side bottom-right" id="serveBR"></div>
+
+                <!-- Indicador central -->
+                <div class="serve-indicator" id="serveIndicator">
+                    <div class="serve-team" id="serveTeamText">🔹 Saque: Equipo 1</div>
+                    <div class="serve-side-text" id="serveSideText">Lado: Derecha</div>
+                    <div class="serve-number" id="serveNumber">Saque #1</div>
+                </div>
+
+                <!-- Etiquetas -->
+                <div class="court-label left">⬅ IZQ</div>
+                <div class="court-label right">DER ➡</div>
+                <div class="court-label top">▲ RED</div>
+                <div class="court-label bottom">▼ RED</div>
+            </div>
+        </div>
+
+        <!-- ============================================
+        MARCADOR
+        ============================================ -->
         <div class="scoreboard">
             <div class="team team-1" id="team1">
                 <div class="team-name">
                     EQUIPO 1
                     <span class="chip-id" id="chip1Id">Esperando chip...</span>
+                    <span class="serve-badge" id="serveBadge1"></span>
                 </div>
                 <div class="points" id="points1">0</div>
                 <div class="points-label">PUNTOS</div>
@@ -544,6 +817,7 @@
                 <div class="team-name">
                     EQUIPO 2
                     <span class="chip-id" id="chip2Id">Esperando chip...</span>
+                    <span class="serve-badge" id="serveBadge2"></span>
                 </div>
                 <div class="points" id="points2">0</div>
                 <div class="points-label">PUNTOS</div>
@@ -551,7 +825,9 @@
             </div>
         </div>
 
-        <!-- Información del partido -->
+        <!-- ============================================
+        INFORMACIÓN DEL PARTIDO
+        ============================================ -->
         <div class="match-info">
             <div class="info-item">
                 <div class="label">SET</div>
@@ -559,24 +835,33 @@
             </div>
             <div class="info-item">
                 <div class="label">Punto de Oro</div>
-                <div class="value" id="oroStatus" style="font-size:1rem;color:#ffd700;">⚪</div>
+                <div class="value" id="oroStatus" style="font-size:0.9rem;color:#ffd700;">⚪</div>
             </div>
             <div class="info-item">
-                <div class="label">Cambio de cancha</div>
-                <div class="value" id="courtChange" style="font-size:1rem;color:#4488ff;">✅</div>
+                <div class="label">Tie-Break</div>
+                <div class="value" id="tiebreakStatus" style="font-size:0.9rem;color:#888;">⚪</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Cambio cancha</div>
+                <div class="value" id="courtChange" style="font-size:0.9rem;color:#4488ff;">✅</div>
             </div>
         </div>
 
-        <!-- Área de mensajes -->
+        <!-- ============================================
+        MENSAJES
+        ============================================ -->
         <div class="message-area info" id="messageArea">
             🏁 Acerca el chip del equipo que ganó el punto
         </div>
 
-        <!-- Controles -->
+        <!-- ============================================
+        CONTROLES
+        ============================================ -->
         <div class="controls">
             <button class="btn-undo" onclick="undoPoint()">↩ Deshacer</button>
+            <button class="btn-serve-toggle" onclick="toggleServeSide()">🎯 Cambiar saque</button>
             <button class="btn-change-court" id="btnCourt" onclick="toggleCourtChange()">🔄 Cambiar cancha</button>
-            <button class="btn-reset" onclick="resetMatch()">🔄 Reiniciar partido</button>
+            <button class="btn-reset" onclick="resetMatch()">🔄 Reiniciar</button>
         </div>
 
         <div class="footer">
@@ -596,20 +881,19 @@
             maxSets: 3,
             gamesPerSet: 6,
             tiebreak: false,
-            oroActive: false, // true cuando están 40-40
+            tiebreakPoints: [0, 0],
+            oroActive: false,
             courtChanged: false,
-            history: [], // para deshacer
-            teamChips: {
-                // Se llenan cuando se leen los chips
-                'EQUIPO_1': 0,
-                'EQUIPO_2': 1
-            },
-            chipIds: {
-                0: null,
-                1: null
-            },
+            history: [],
+            chipIds: { 0: null, 1: null },
             matchFinished: false,
-            winner: null // 0 o 1
+            winner: null,
+
+            // ===== NUEVO: CONTROL DE SAQUE =====
+            servingTeam: 0, // 0 = Equipo 1, 1 = Equipo 2
+            serveSide: 0, // 0 = Derecha, 1 = Izquierda (alterna cada punto)
+            serveCount: 1, // Número de saque en el juego actual
+            pointInGame: 0, // Puntos jugados en el juego actual (para alternar)
         };
 
         // ============================================================
@@ -621,6 +905,7 @@
         const elGames2 = document.getElementById('games2');
         const elCurrentSet = document.getElementById('currentSet');
         const elOroStatus = document.getElementById('oroStatus');
+        const elTiebreakStatus = document.getElementById('tiebreakStatus');
         const elCourtChange = document.getElementById('courtChange');
         const elMessage = document.getElementById('messageArea');
         const elNfcText = document.getElementById('nfcText');
@@ -631,19 +916,25 @@
         const elChip2Id = document.getElementById('chip2Id');
         const elTeam1 = document.getElementById('team1');
         const elTeam2 = document.getElementById('team2');
+        const elServeBadge1 = document.getElementById('serveBadge1');
+        const elServeBadge2 = document.getElementById('serveBadge2');
+
+        // Elementos del diagrama de cancha
+        const elServeTL = document.getElementById('serveTL');
+        const elServeTR = document.getElementById('serveTR');
+        const elServeBL = document.getElementById('serveBL');
+        const elServeBR = document.getElementById('serveBR');
+        const elServeTeamText = document.getElementById('serveTeamText');
+        const elServeSideText = document.getElementById('serveSideText');
+        const elServeNumber = document.getElementById('serveNumber');
 
         // ============================================================
-        //  PERSISTENCIA (LocalStorage)
+        //  PERSISTENCIA
         // ============================================================
         function saveState() {
             try {
-                const data = {
-                    ...state,
-                    chipIds: state.chipIds,
-                    teamChips: state.teamChips
-                };
-                localStorage.setItem('padelNFCState', JSON.stringify(data));
-            } catch (e) { /* ignorar */ }
+                localStorage.setItem('padelNFCState', JSON.stringify(state));
+            } catch (e) {}
         }
 
         function loadState() {
@@ -659,18 +950,141 @@
         }
 
         // ============================================================
-        //  ACTUALIZAR UI
+        //  LÓGICA DE SAQUE
         // ============================================================
-        function updateUI() {
-            // Puntos
-            elPoints1.textContent = state.points[0];
-            elPoints2.textContent = state.points[1];
+        function updateServe() {
+            // Determinar quién saca:
+            // - Al inicio del juego, saca el equipo que ganó el juego anterior
+            // - Si es el primer juego, saca el Equipo 1
+            // - Alterna el lado en cada punto
 
-            // Juegos
+            const teamName = state.servingTeam === 0 ? 'Equipo 1' : 'Equipo 2';
+            const sideName = state.serveSide === 0 ? 'Derecha ➡' : 'Izquierda ⬅';
+            const sideShort = state.serveSide === 0 ? 'DER' : 'IZQ';
+
+            // Actualizar texto del indicador
+            elServeTeamText.textContent = `🔹 Saque: ${teamName}`;
+            elServeSideText.textContent = `Lado: ${sideName}`;
+            elServeNumber.textContent = `Saque #${state.serveCount}`;
+
+            // Actualizar badges en los equipos
+            if (state.servingTeam === 0) {
+                elServeBadge1.textContent = '🎯 Sacando';
+                elServeBadge2.textContent = '';
+                elTeam1.classList.add('serving-team');
+                elTeam2.classList.remove('serving-team');
+            } else {
+                elServeBadge2.textContent = '🎯 Sacando';
+                elServeBadge1.textContent = '';
+                elTeam2.classList.add('serving-team');
+                elTeam1.classList.remove('serving-team');
+            }
+
+            // Actualizar diagrama de cancha
+            // Primero limpiar todos
+            [elServeTL, elServeTR, elServeBL, elServeBR].forEach(el => {
+                el.classList.remove('active-serve');
+            });
+
+            // Iluminar el lado correcto
+            // El saque siempre es desde el lado derecho del sacador
+            // En pádel, el sacador siempre saca desde su lado derecho (visto desde su posición)
+            // Pero en el diagrama, mostramos desde arriba:
+            // - Si saca Equipo 1 (arriba): Derecha = TL, Izquierda = TR
+            // - Si saca Equipo 2 (abajo): Derecha = BR, Izquierda = BL
+
+            if (state.servingTeam === 0) {
+                // Equipo 1 saca (parte superior)
+                if (state.serveSide === 0) {
+                    // Derecha (visto desde arriba: izquierda del diagrama)
+                    elServeTL.classList.add('active-serve');
+                } else {
+                    elServeTR.classList.add('active-serve');
+                }
+            } else {
+                // Equipo 2 saca (parte inferior)
+                if (state.serveSide === 0) {
+                    // Derecha (visto desde abajo: derecha del diagrama)
+                    elServeBR.classList.add('active-serve');
+                } else {
+                    elServeBL.classList.add('active-serve');
+                }
+            }
+
+            // Actualizar UI de puntos (se hace en updateUI)
+        }
+
+        // Alternar lado de saque manualmente (por si el árbitro necesita corregir)
+        function toggleServeSide() {
+            if (state.matchFinished) {
+                showMessage('⛔ Partido terminado', 'alert');
+                return;
+            }
+            state.serveSide = state.serveSide === 0 ? 1 : 0;
+            state.serveCount++;
+            updateServe();
+            showMessage(`🎯 Saque cambiado a ${state.serveSide === 0 ? 'Derecha' : 'Izquierda'}`, 'info');
+            saveState();
+        }
+
+        // Avanzar saque después de cada punto
+        function advanceServe() {
+            // Alternar lado después de cada punto
+            state.serveSide = state.serveSide === 0 ? 1 : 0;
+            state.serveCount++;
+            state.pointInGame++;
+
+            // En tie-break, el saque alterna cada 2 puntos
+            if (state.tiebreak) {
+                // En tie-break: mismo equipo saca 2 puntos seguidos, luego cambia
+                if (state.pointInGame % 2 === 0) {
+                    // Cambiar equipo cada 2 puntos
+                    state.servingTeam = state.servingTeam === 0 ? 1 : 0;
+                }
+                // El lado sigue alternando cada punto
+            } else {
+                // En juego normal: el equipo que ganó el punto anterior saca
+                // Pero como el punto ya se sumó, el que saca es el que ganó el juego
+                // Esto se maneja en checkGame cuando se gana un juego
+            }
+
+            updateServe();
+        }
+
+        // Establecer el saque inicial después de ganar un juego
+        function setServeAfterGame(winnerTeam) {
+            // El equipo que ganó el juego saca en el siguiente
+            state.servingTeam = winnerTeam;
+            state.serveSide = 0; // Empieza por la derecha
+            state.serveCount = 1;
+            state.pointInGame = 0;
+            updateServe();
+        }
+
+        // ============================================================
+        //  LÓGICA DE PUNTUACIÓN (con saque integrado)
+        // ============================================================
+        function getPointDisplay(p) {
+            if (p === 0) return '0';
+            if (p === 1) return '15';
+            if (p === 2) return '30';
+            if (p === 3) return '40';
+            if (p >= 4) return 'ORO';
+            return p;
+        }
+
+        function updateUI() {
+            // Mostrar puntos
+            if (state.tiebreak) {
+                elPoints1.textContent = state.tiebreakPoints[0];
+                elPoints2.textContent = state.tiebreakPoints[1];
+            } else {
+                elPoints1.textContent = getPointDisplay(state.points[0]);
+                elPoints2.textContent = getPointDisplay(state.points[1]);
+            }
+
             elGames1.textContent = state.games[0];
             elGames2.textContent = state.games[1];
-
-            // Set actual
             elCurrentSet.textContent = state.currentSet;
 
             // Punto de oro
@@ -680,6 +1094,17 @@
             } else {
                 elOroStatus.textContent = '⚪ Normal';
                 elOroStatus.style.color = '#888';
+            }
+
+            // Tie-break
+            if (state.tiebreak) {
+                elTiebreakStatus.textContent = '🔥 TIE-BREAK';
+                elTiebreakStatus.style.color = '#ff44ff';
+                elTiebreakStatus.className = 'value tiebreak-active';
+            } else {
+                elTiebreakStatus.textContent = '⚪ No';
+                elTiebreakStatus.style.color = '#888';
+                elTiebreakStatus.className = 'value';
             }
 
             // Cambio de cancha
@@ -693,10 +1118,9 @@
                 elBtnCourt.classList.remove('active');
             }
 
-            // Equipo activo (último que tocó)
-            // (se actualiza en sumarPunto)
+            // Actualizar indicador de saque
+            updateServe();
 
-            // Guardar
             saveState();
         }
 
@@ -719,18 +1143,8 @@
         }
 
         // ============================================================
-        //  LÓGICA DE PUNTUACIÓN (Pádel con punto de oro)
+        //  SUMAR PUNTO (con lógica de saque)
         // ============================================================
-        function getPointsText(p) {
-            // Devuelve 0, 15, 30, 40 o "ORO"
-            if (p === 0) return 0;
-            if (p === 1) return 15;
-            if (p === 2) return 30;
-            if (p === 3) return 40;
-            if (p >= 4) return 'ORO';
-            return p;
-        }
-
         function sumarPunto(teamIndex) {
             if (state.matchFinished) {
                 showMessage('⛔ El partido ya terminó. Reinicia para jugar de nuevo.', 'alert');
@@ -742,70 +1156,92 @@
                 return;
             }
 
-            // Guardar historia para deshacer
             state.history.push(JSON.stringify(state));
 
-            // Sumar punto al equipo
+            // === MODO TIE-BREAK ===
+            if (state.tiebreak) {
+                state.tiebreakPoints[teamIndex]++;
+
+                const tb1 = state.tiebreakPoints[0];
+                const tb2 = state.tiebreakPoints[1];
+
+                if ((tb1 >= 7 || tb2 >= 7) && Math.abs(tb1 - tb2) >= 2) {
+                    // Ganó el tie-break → gana el set
+                    state.games[teamIndex] = 7;
+                    state.games[1 - teamIndex] = 6;
+                    state.sets[teamIndex]++;
+                    showMessage(`🏆 ¡TIE-BREAK! ${teamIndex === 0 ? 'Equipo 1' : 'Equipo 2'} gana el SET ${state.currentSet}`, 'winner');
+                    state.currentSet++;
+                    state.games = [0, 0];
+                    state.points = [0, 0];
+                    state.tiebreak = false;
+                    state.tiebreakPoints = [0, 0];
+                    state.oroActive = false;
+                    // El que ganó el set, saca en el siguiente
+                    setServeAfterGame(teamIndex);
+                    checkMatch();
+                    updateUI();
+                    checkCourtChange();
+                    return;
+                }
+
+                // Avanzar saque (alterna cada 2 puntos en tie-break)
+                state.serveSide = state.serveSide === 0 ? 1 : 0;
+                state.serveCount++;
+                state.pointInGame++;
+                if (state.pointInGame % 2 === 0) {
+                    state.servingTeam = state.servingTeam === 0 ? 1 : 0;
+                }
+
+                updateUI();
+                showMessage(`🎾 Tie-break: ${tb1} - ${tb2}`, 'info');
+                const teamEl = teamIndex === 0 ? elTeam1 : elTeam2;
+                teamEl.classList.add('active-team');
+                setTimeout(() => teamEl.classList.remove('active-team'), 500);
+                return;
+            }
+
+            // === MODO NORMAL ===
             state.points[teamIndex]++;
 
-            // Verificar si se ganó un juego
-            checkGame(teamIndex);
-
-            // Verificar si se ganó un set
-            checkSet();
-
-            // Verificar partido
-            checkMatch();
-
-            // Actualizar UI
-            updateUI();
-
-            // Mensaje
-            const teamName = teamIndex === 0 ? 'Equipo 1' : 'Equipo 2';
-            showMessage(`✅ Punto para ${teamName}`, 'success');
-
-            // Efecto visual en el equipo
-            const teamEl = teamIndex === 0 ? elTeam1 : elTeam2;
-            teamEl.classList.add('active-team');
-            setTimeout(() => teamEl.classList.remove('active-team'), 500);
-
-            // Actualizar estado del punto de oro en UI
-            updateOroStatus();
-        }
-
-        function checkGame(teamIndex) {
             const p1 = state.points[0];
             const p2 = state.points[1];
 
-            // Punto de oro: si ambos tienen 40+ (3 puntos) y están empatados
+            // Punto de oro
             if (p1 >= 3 && p2 >= 3 && p1 === p2) {
                 state.oroActive = true;
                 showMessage('🥇 ¡PUNTO DE ORO! El siguiente punto gana el juego', 'warning');
                 updateUI();
+                advanceServe();
                 return;
             }
 
-            // Si hay punto de oro activo, el primero que sume gana
             if (state.oroActive) {
-                // El que sumó (teamIndex) ganó el juego
+                // Ganó el juego con punto de oro
                 state.games[teamIndex]++;
                 state.points = [0, 0];
                 state.oroActive = false;
                 showMessage(`🎾 Juego para ${teamIndex === 0 ? 'Equipo 1' : 'Equipo 2'}`, 'success');
+                // El que ganó el juego saca en el siguiente
+                setServeAfterGame(teamIndex);
                 updateUI();
                 checkCourtChange();
+                checkSet();
+                checkMatch();
                 return;
             }
 
-            // Puntuación normal (sin deuce, punto de oro)
-            // Si un jugador llega a 4 y el otro tiene 3 o menos, gana el juego
+            // Puntuación normal
             if (p1 >= 4 && p1 - p2 >= 1) {
                 state.games[0]++;
                 state.points = [0, 0];
                 state.oroActive = false;
                 showMessage(`🎾 Juego para Equipo 1`, 'success');
+                setServeAfterGame(0);
                 updateUI();
                 checkCourtChange();
+                checkSet();
+                checkMatch();
                 return;
             }
             if (p2 >= 4 && p2 - p1 >= 1) {
@@ -813,71 +1249,80 @@
                 state.points = [0, 0];
                 state.oroActive = false;
                 showMessage(`🎾 Juego para Equipo 2`, 'success');
+                setServeAfterGame(1);
                 updateUI();
                 checkCourtChange();
+                checkSet();
+                checkMatch();
                 return;
             }
 
-            // Si ambos llegan a 3 (40-40) se activa punto de oro
             if (p1 === 3 && p2 === 3) {
                 state.oroActive = true;
                 showMessage('🥇 ¡PUNTO DE ORO! El siguiente punto gana el juego', 'warning');
                 updateUI();
+                advanceServe();
+                return;
             }
+
+            // Punto normal (sin ganar juego)
+            updateUI();
+            advanceServe();
+            const teamEl = teamIndex === 0 ? elTeam1 : elTeam2;
+            teamEl.classList.add('active-team');
+            setTimeout(() => teamEl.classList.remove('active-team'), 500);
         }
 
+        // ============================================================
+        //  VERIFICAR SET
+        // ============================================================
         function checkSet() {
             const g1 = state.games[0];
             const g2 = state.games[1];
-            const set = state.currentSet;
 
-            // Si alguien llega a 6 juegos con diferencia de 2
             if ((g1 >= 6 || g2 >= 6) && Math.abs(g1 - g2) >= 2) {
                 if (g1 > g2) {
                     state.sets[0]++;
-                    showMessage(`🏆 ¡Equipo 1 gana el SET ${set}!`, 'winner');
+                    showMessage(`🏆 ¡Equipo 1 gana el SET ${state.currentSet}!`, 'winner');
                 } else {
                     state.sets[1]++;
-                    showMessage(`🏆 ¡Equipo 2 gana el SET ${set}!`, 'winner');
+                    showMessage(`🏆 ¡Equipo 2 gana el SET ${state.currentSet}!`, 'winner');
                 }
                 state.games = [0, 0];
                 state.points = [0, 0];
                 state.oroActive = false;
                 state.currentSet++;
+                // El que ganó el set saca en el siguiente
+                const winner = g1 > g2 ? 0 : 1;
+                setServeAfterGame(winner);
                 updateUI();
-                return;
+                checkMatch();
+                return true;
             }
 
-            // Tie-break (7-6)
-            if (g1 === 6 && g2 === 6) {
-                // Modo tie-break: se juega a 7 puntos con diferencia de 2
-                // Lo manejamos en checkGame con un flag, pero simplificamos:
-                // Si llegan a 7-6 en juegos, el que llega a 7 gana el set
-                if (g1 >= 7 && g1 - g2 >= 1) {
-                    state.sets[0]++;
-                    showMessage(`🏆 ¡Equipo 1 gana el SET ${set} en tie-break!`, 'winner');
-                    state.games = [0, 0];
-                    state.points = [0, 0];
-                    state.oroActive = false;
-                    state.currentSet++;
-                    updateUI();
-                    return;
-                }
-                if (g2 >= 7 && g2 - g1 >= 1) {
-                    state.sets[1]++;
-                    showMessage(`🏆 ¡Equipo 2 gana el SET ${set} en tie-break!`, 'winner');
-                    state.games = [0, 0];
-                    state.points = [0, 0];
-                    state.oroActive = false;
-                    state.currentSet++;
-                    updateUI();
-                    return;
-                }
+            if (g1 === 6 && g2 === 6 && !state.tiebreak) {
+                state.tiebreak = true;
+                state.tiebreakPoints = [0, 0];
+                state.points = [0, 0];
+                state.oroActive = false;
+                // En tie-break, el que saca es el que recibía en el juego anterior
+                // (alterna: el que NO sacó en el último juego)
+                state.servingTeam = state.servingTeam === 0 ? 1 : 0;
+                state.serveSide = 0;
+                state.serveCount = 1;
+                state.pointInGame = 0;
+                showMessage('🔥 ¡TIE-BREAK! Primero a 7 con diferencia de 2', 'warning');
+                updateUI();
+                return true;
             }
+
+            return false;
         }
 
+        // ============================================================
+        //  VERIFICAR PARTIDO
+        // ============================================================
         function checkMatch() {
-            // Si un equipo llega a 2 sets (en 3 sets)
             if (state.sets[0] >= 2) {
                 state.matchFinished = true;
                 state.winner = 0;
@@ -892,7 +1337,6 @@
                 updateUI();
                 return;
             }
-            // Si se acabaron los sets (3 sets jugados)
             if (state.currentSet > state.maxSets) {
                 state.matchFinished = true;
                 if (state.sets[0] > state.sets[1]) {
@@ -908,14 +1352,12 @@
             }
         }
 
+        // ============================================================
+        //  CAMBIO DE CANCHA
+        // ============================================================
         function checkCourtChange() {
-            // Regla estándar: se cambia de cancha cuando la suma de juegos es impar
             const totalGames = state.games[0] + state.games[1];
-            // Pero también hay que considerar los juegos de sets anteriores
-            // Simplificamos: usamos el total de juegos en el set actual
-            // La regla real: se cambia al finalizar el primer juego, y luego cada 2 juegos
-            // Es decir, se cambia cuando (juegos totales del set) es impar
-            if (totalGames % 2 === 1) {
+            if (totalGames % 2 === 1 || totalGames === 1) {
                 state.courtChanged = true;
                 showMessage('🔄 ¡Cambio de cancha! La suma de juegos es impar', 'warning');
                 updateUI();
@@ -925,12 +1367,18 @@
             }
         }
 
-        function updateOroStatus() {
-            // Se actualiza en updateUI
+        function toggleCourtChange() {
+            state.courtChanged = !state.courtChanged;
+            if (state.courtChanged) {
+                showMessage('🔄 Cambio de cancha marcado manualmente', 'warning');
+            } else {
+                showMessage('✅ Cambio de cancha restablecido', 'info');
+            }
+            updateUI();
         }
 
         // ============================================================
-        //  DESHACER
+        //  DESHACER / REINICIAR
         // ============================================================
         function undoPoint() {
             if (state.history.length === 0) {
@@ -943,20 +1391,16 @@
             }
             const prev = JSON.parse(state.history.pop());
             Object.assign(state, prev);
-            // Restaurar referencias de objetos
             state.history = state.history || [];
-            state.teamChips = state.teamChips || { 'EQUIPO_1': 0, 'EQUIPO_2': 1 };
             state.chipIds = state.chipIds || { 0: null, 1: null };
             state.matchFinished = false;
             state.winner = null;
+            if (!state.tiebreakPoints) state.tiebreakPoints = [0, 0];
             updateUI();
             updateChipDisplay();
             showMessage('↩ Deshecho el último punto', 'info');
         }
 
-        // ============================================================
-        //  REINICIAR
-        // ============================================================
         function resetMatch() {
             if (!confirm('¿Reiniciar completamente el partido?')) return;
             state.points = [0, 0];
@@ -964,38 +1408,28 @@
             state.sets = [0, 0];
             state.currentSet = 1;
             state.oroActive = false;
+            state.tiebreak = false;
+            state.tiebreakPoints = [0, 0];
             state.courtChanged = false;
             state.history = [];
             state.matchFinished = false;
             state.winner = null;
-            // No borramos los chips registrados
+            state.servingTeam = 0;
+            state.serveSide = 0;
+            state.serveCount = 1;
+            state.pointInGame = 0;
             updateUI();
             updateChipDisplay();
             showMessage('🔄 Partido reiniciado', 'info');
         }
 
         // ============================================================
-        //  CAMBIO DE CANCHA MANUAL
-        // ============================================================
-        function toggleCourtChange() {
-            state.courtChanged = !state.courtChanged;
-            if (state.courtChanged) {
-                showMessage('🔄 Cambio de cancha marcado manualmente', 'warning');
-            } else {
-                showMessage('✅ Cambio de cancha restablecido', 'info');
-            }
-            updateUI();
-        }
-
-        // ============================================================
-        //  NFC - LECTURA DE CHIPS
+        //  NFC
         // ============================================================
         let nfcReader = null;
-        let nfcSupported = false;
 
         async function initNFC() {
             try {
-                // Verificar soporte
                 if (!('NDEFReader' in window)) {
                     showMessage('❌ Este navegador no soporta NFC. Usa Chrome en Android.', 'alert');
                     elNfcText.textContent = '❌ No soportado';
@@ -1003,7 +1437,6 @@
                     return;
                 }
 
-                nfcSupported = true;
                 elNfcText.textContent = '⏳ Leyendo...';
                 elNfcDot.className = 'dot waiting';
 
@@ -1039,14 +1472,9 @@
                 return;
             }
 
-            // Recortar el serial para mostrarlo
             const shortId = serialNumber.substring(0, 12);
-
-            // Determinar si es Equipo 1 o Equipo 2 (primera vez que se lee)
-            // Si el chip ya está registrado, simplemente suma punto
             let teamIndex = null;
 
-            // Buscar si el chip ya está asignado
             for (let i = 0; i < 2; i++) {
                 if (state.chipIds[i] === serialNumber) {
                     teamIndex = i;
@@ -1054,7 +1482,6 @@
                 }
             }
 
-            // Si no está asignado, asignarlo al primer equipo libre
             if (teamIndex === null) {
                 if (state.chipIds[0] === null) {
                     state.chipIds[0] = serialNumber;
@@ -1065,22 +1492,18 @@
                     teamIndex = 1;
                     showMessage(`✅ Chip registrado como EQUIPO 2 (${shortId})`, 'success');
                 } else {
-                    // Ambos chips ya registrados, buscar coincidencia
                     showMessage(`⚠️ Chip ${shortId} no registrado. Ya hay 2 equipos.`, 'warning');
                     return;
                 }
                 updateChipDisplay();
                 updateUI();
-                // No sumamos punto en registro
                 return;
             }
 
-            // Si el chip ya está registrado, sumar punto
             if (teamIndex !== null) {
                 const teamName = teamIndex === 0 ? 'Equipo 1' : 'Equipo 2';
                 showMessage(`📡 Chip ${teamName} detectado - Sumando punto`, 'success');
                 sumarPunto(teamIndex);
-                // Feedback háptico (vibración)
                 if (navigator.vibrate) {
                     navigator.vibrate(100);
                 }
@@ -1088,10 +1511,9 @@
         }
 
         // ============================================================
-        //  SIMULACIÓN (para pruebas sin NFC)
+        //  SIMULACIÓN
         // ============================================================
         function simularChip() {
-            // Simula la lectura de un chip alternando entre equipos
             if (!state.chipIds[0]) {
                 state.chipIds[0] = 'SIM_001';
                 updateChipDisplay();
@@ -1106,7 +1528,6 @@
                 updateUI();
                 return;
             }
-            // Si ya están ambos, alternar
             const next = Math.random() < 0.5 ? 0 : 1;
             showMessage(`🧪 Simulando punto para ${next === 0 ? 'Equipo 1' : 'Equipo 2'}`, 'info');
             sumarPunto(next);
@@ -1116,24 +1537,31 @@
         //  INICIALIZACIÓN
         // ============================================================
         function init() {
-            // Cargar estado guardado
             const loaded = loadState();
             if (loaded) {
-                // Asegurar que los objetos tengan las propiedades correctas
-                state.teamChips = state.teamChips || { 'EQUIPO_1': 0, 'EQUIPO_2': 1 };
                 state.chipIds = state.chipIds || { 0: null, 1: null };
                 state.history = state.history || [];
                 state.matchFinished = state.matchFinished || false;
                 state.winner = state.winner || null;
+                state.tiebreakPoints = state.tiebreakPoints || [0, 0];
+                // Asegurar propiedades de saque
+                state.servingTeam = state.servingTeam !== undefined ? state.servingTeam : 0;
+                state.serveSide = state.serveSide !== undefined ? state.serveSide : 0;
+                state.serveCount = state.serveCount || 1;
+                state.pointInGame = state.pointInGame || 0;
                 showMessage('📂 Partido cargado', 'info');
             } else {
+                // Inicializar saque
+                state.servingTeam = 0;
+                state.serveSide = 0;
+                state.serveCount = 1;
+                state.pointInGame = 0;
                 showMessage('🏁 Acerca el chip del equipo que ganó el punto', 'info');
             }
 
             updateUI();
             updateChipDisplay();
 
-            // Detectar si NFC está disponible pero no iniciado
             if ('NDEFReader' in window) {
                 elNfcText.textContent = '📡 NFC disponible';
                 elNfcDot.className = 'dot waiting';
@@ -1144,25 +1572,13 @@
                 elBtnNfc.disabled = true;
                 showMessage('⚠️ Usa Chrome en Android para NFC', 'info');
             }
-
-            // Soporte para pantalla completa en móvil
-            document.addEventListener('click', () => {
-                if (document.documentElement.requestFullscreen && window.innerWidth < 800) {
-                    // No forzamos, solo lo dejamos disponible
-                }
-            });
         }
 
-        // Ejecutar al cargar
         init();
-
-        // Guardar automáticamente cada 5 segundos
         setInterval(saveState, 5000);
-
-        // Recuperar si se cierra y abre
         window.addEventListener('beforeunload', saveState);
 
-        console.log('🏸 Marcador Pádel NFC cargado');
+        console.log('🏸 Marcador Pádel NFC con indicador de saque');
         console.log('Estado:', state);
     </script>
 
